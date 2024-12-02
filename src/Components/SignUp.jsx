@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { signUp } from "../api/user.api.js";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useCookies } from "react-cookie";
 export default function Signup() {
 
   const [name, setName] = useState("");
@@ -10,7 +10,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
-
+  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken"]);
   const navigate = useNavigate();
   const handleOnChange = (e) => {
     const { id, files, value } = e.target;
@@ -53,8 +53,15 @@ export default function Signup() {
     e.preventDefault();
     console.log(avatar, coverImage, name, password,);
     console.log('Signing up');
-    signUp(name, userName, email, password, avatar, coverImage);
-    navigate('/home')
+    try {
+      const { accessToken, refreshToken } = await signUp(name, userName, email, password, avatar, coverImage);
+      setCookies('accessToken', accessToken, { path: '/' });
+      setCookies('refresToken', refreshToken, { path: '/' });
+      navigate('/home');
+    } catch (error) {
+
+      console.error('Sign-up failed:', error);
+    }
   };
 
   return (
