@@ -10,7 +10,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
-  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken"]);
+  const [cookies, setCookie, removeCookie] = useCookies(['mySpecialCookie']);
   const navigate = useNavigate();
   const handleOnChange = (e) => {
     const { id, files, value } = e.target;
@@ -49,14 +49,16 @@ export default function Signup() {
 
 
 
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     console.log(avatar, coverImage, name, password,);
     console.log('Signing up');
     try {
-      const { accessToken, refreshToken } = await signUp(name, userName, email, password, avatar, coverImage);
-      setCookies('accessToken', accessToken, { path: '/' });
-      setCookies('refresToken', refreshToken, { path: '/' });
+      await signUp(name, userName, email, password, avatar, coverImage);
+
+      console.log(cookies.mySpecialCookie, '...', cookies);
+
       navigate('/home');
     } catch (error) {
 
@@ -149,7 +151,7 @@ export default function Signup() {
                 Sign Up
               </button>
             </form>
-            <p className="mt-5">Already Have an account <Link to={`/`} className=" ms-2 btn btn-primary">Login</Link></p>
+            <p className="mt-5">Already Have an account <Link to={`/login`} className=" ms-2 btn btn-primary">Login</Link></p>
           </div>
         </div>
       </div>

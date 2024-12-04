@@ -16,11 +16,16 @@ export const signUp = async (name, username, email, password, avatar, coverImage
     if (coverImage) formData.append("coverImage", coverImage); // Append file
 
     // Send the form data using Axios
-    const res = await axios.post(`${BASE_URL}/users/register`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Indicate that the request body is form-data
+    const res = await axios.post(
+      `${BASE_URL}/users/register`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data", // Indicate the request body is form-data
+        },
+        withCredentials: true,  // Send cookies with the request
       }
-    });
+    );
 
     // Handle the response
     console.log("User registered successfully:", res.data);
@@ -31,7 +36,7 @@ export const signUp = async (name, username, email, password, avatar, coverImage
     };
 
   } catch (err) {
-    console.error("Error during sign-up:", err);
+    console.error("Error during signup:", err);
     throw err
   }
 };
