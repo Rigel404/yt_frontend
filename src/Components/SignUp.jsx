@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { signUp } from "../api/user.api.js";
 import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import { authenticateUser } from "../api/user.api.js";
+import Spin from "./Spin.jsx";
 export default function Signup() {
 
   const [name, setName] = useState("");
@@ -10,8 +11,9 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
-  const [cookies, setCookie, removeCookie] = useCookies(['mySpecialCookie']);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   const handleOnChange = (e) => {
     const { id, files, value } = e.target;
 
@@ -46,115 +48,131 @@ export default function Signup() {
     }
   };
 
+  useEffect(() => {
 
+    const userLoggedIn = async () => {
+      try {
+        const res = await authenticateUser();
+        navigate('/')
+      } catch (error) {
+        setLoading(false)
+      }
 
+    }
+    userLoggedIn();
+  }, []);
 
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log(avatar, coverImage, name, password,);
     console.log('Signing up');
     try {
       await signUp(name, userName, email, password, avatar, coverImage);
-
-      console.log(cookies.mySpecialCookie, '...', cookies);
-
-      navigate('/home');
+      navigate('/');
     } catch (error) {
-
       console.error('Sign-up failed:', error);
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {
+        loading ? (<><Spin /></>) :
+          (
+            <>
+              <div className="container mt-5  ">
+                <div className="row justify-content-center  ">
+                  <div className="col-10 col-md-5 border border-2 p-5 customCard">
+                    <h3 className="text-center text-secondary">Sign Up</h3>
+                    <form onSubmit={handleSignUp}>
+                      <div className="mb-3">
+                        <label htmlFor="name" className="form-label">
+                          Your Name
+                        </label>
+                        <span style={{ color: 'red' }}> *</span>
+                        <input
+                          className="form-control"
+                          type="text"
+                          onChange={handleOnChange}
+                          id="name"
+                        />
+                      </div> <div className="mb-3">
+                        <label htmlFor="userName" className="form-label">
+                          Username
+                        </label>
+                        <span style={{ color: 'red' }}> *</span>
+                        <input
+                          className="form-control"
+                          type="text"
+                          onChange={handleOnChange}
+                          id="userName"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="email" className="form-label">
+                          Email address
+                        </label>
+                        <span style={{ color: 'red' }}> *</span>
+                        <input
+                          type="email"
+                          className="form-control"
+                          onChange={handleOnChange}
+                          id="email"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="password" className="form-label">
+                          Password
+                        </label>
+                        <span style={{ color: 'red' }}> *</span>
+                        <input
+                          type="password"
+                          onChange={handleOnChange}
+                          className="form-control"
+                          id="password"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="avatar" className="form-label">
+                          Profile Picture
+                        </label>
+                        <span style={{ color: 'red' }}> *</span>
+                        <input
+                          type="file"
+                          className="form-control"
+                          onChange={handleOnChange}
+                          id="avatar"
+                          accept="image/*"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="coverImage" className="form-label">
+                          Background Image
+                        </label>
+                        <input
+                          type="file"
+                          className="form-control"
+                          onChange={handleOnChange}
+                          id="coverImage"
+                          accept="image/*"
+                        />
+                      </div>
 
-      <div className="container mt-5  ">
-        <div className="row justify-content-center  ">
-          <div className="col-10 col-md-5 border border-2 p-5 customCard">
-            <h3 className="text-center text-secondary">Sign Up</h3>
-            <form onSubmit={handleSignUp}>
-              <div className="mb-3">
-                <label htmlFor="name" className="form-label">
-                  Your Name
-                </label>
-                <span style={{ color: 'red' }}> *</span>
-                <input
-                  className="form-control"
-                  type="text"
-                  onChange={handleOnChange}
-                  id="name"
-                />
-              </div> <div className="mb-3">
-                <label htmlFor="userName" className="form-label">
-                  Username
-                </label>
-                <span style={{ color: 'red' }}> *</span>
-                <input
-                  className="form-control"
-                  type="text"
-                  onChange={handleOnChange}
-                  id="userName"
-                />
+                      <button type="submit" className="btn btn-primary">
+                        Sign Up
+                      </button>
+                    </form>
+                    <p className="mt-5">Already Have an account <Link to={`/login`} className=" ms-2 btn btn-primary">Login</Link></p>
+                  </div>
+                </div>
               </div>
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">
-                  Email address
-                </label>
-                <span style={{ color: 'red' }}> *</span>
-                <input
-                  type="email"
-                  className="form-control"
-                  onChange={handleOnChange}
-                  id="email"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <span style={{ color: 'red' }}> *</span>
-                <input
-                  type="password"
-                  onChange={handleOnChange}
-                  className="form-control"
-                  id="password"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="avatar" className="form-label">
-                  Profile Picture
-                </label>
-                <span style={{ color: 'red' }}> *</span>
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={handleOnChange}
-                  id="avatar"
-                  accept="image/*"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="coverImage" className="form-label">
-                  Background Image
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={handleOnChange}
-                  id="coverImage"
-                  accept="image/*"
-                />
-              </div>
-
-              <button type="submit" className="btn btn-primary">
-                Sign Up
-              </button>
-            </form>
-            <p className="mt-5">Already Have an account <Link to={`/login`} className=" ms-2 btn btn-primary">Login</Link></p>
-          </div>
-        </div>
-      </div>
+            </>
+          )
+      }
     </>
+
   );
 }

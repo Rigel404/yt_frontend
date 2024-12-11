@@ -1,33 +1,39 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
-
+import { authenticateUser } from "../api/user.api.js"
+import Spin from "./Spin.jsx";
 export default function Home() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
 
-    setTimeout(() => {
-      if ('a' != 'a') {
-        setLoggedIn(true);
-        navigate('/')
-      } else {
+    const userLoggedIn = async () => {
+      try {
+        const res = await authenticateUser();
+        setLoading(false);
+      } catch (error) {
+
+        setLoading(true)
         navigate('/login')
       }
-    }, 3000)
+    }
 
-  }, [loggedIn]); // Dependency array to control when the effect runs
+    userLoggedIn();
+  }, []);
 
   return (
     <>
-      {loggedIn ? (
+      {loading ? (
         <>
-          <Navbar />
-          <h3>Welcome To Home</h3>
+          <Spin />
         </>
       ) : (
-        <h3>Loading...</h3>
+        <>
+            <Navbar />
+            <h3>Welcome To Home</h3>
+          </>
       )}
     </>
   );
