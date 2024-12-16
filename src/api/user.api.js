@@ -4,8 +4,6 @@ import { BASE_URL } from "../constants/api.constants";
 
 export const signUp = async (name, username, email, password, avatar, coverImage) => {
   try {
-    console.log('in api call', name, username, email, password);
-
     // Create a FormData object
     const formData = new FormData();
     formData.append("fullName", name);
@@ -27,14 +25,6 @@ export const signUp = async (name, username, email, password, avatar, coverImage
       }
     );
 
-    // Handle the response
-    // console.log("User registered successfully:", res.data);
-    // console.log("User registered tokens:", res.data.data);
-    // return {
-    //   accessToken: res.data.data.accessToken,
-    //   refreshToken: res.data.data.refreshToken,
-    // };
-
   } catch (err) {
     console.error("Error during signup:", err);
     throw err
@@ -43,8 +33,6 @@ export const signUp = async (name, username, email, password, avatar, coverImage
 
 export const login = async (email, password) => {
   try {
-    console.log('in api call', email, password);
-
     // Create the request payload as a JSON object
     const payload = {
       email: email,
@@ -65,18 +53,14 @@ export const login = async (email, password) => {
 
     // Handle the response (optional)
     console.log(res.data);
-
   } catch (err) {
     console.error("Error during login:", err);
     throw err;
   }
 };
 
-
 export const authenticateUser = async () => {
   try {
-    console.log('in api call authenticate User');
-
     // Send the form data using Axios
     const res = await axios.get(
       `${BASE_URL}/users/get-user`, // Replace with the appropriate endpoint for checking login status
@@ -84,9 +68,7 @@ export const authenticateUser = async () => {
         withCredentials: true,  // Ensures cookies are sent with the request
       }
     );
-
     return res.status == 200
-
   } catch (err) {
     console.error("Error during authentication:", err);
     throw err
