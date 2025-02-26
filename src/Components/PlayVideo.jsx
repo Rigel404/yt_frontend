@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { addComments, fetchAllComments } from "../api/comment.api.js";
+import Navbar from "./Navbar.jsx";
 
 export default function PlayVideo() {
   const { id } = useParams();
@@ -25,17 +26,17 @@ export default function PlayVideo() {
   };
 
   const handleProgress = (state) => {
-    setPlayedSeconds(state.playedSeconds); // Update elapsed time
+    setPlayedSeconds(state.playedSeconds);
   };
 
   const handleDuration = (duration) => {
-    setDuration(duration); // Capture total duration
+    setDuration(duration);
   };
 
   const handleSeek = (e) => {
-    const newTime = parseFloat(e.target.value); // Get new time in seconds
+    const newTime = parseFloat(e.target.value);
     setPlayedSeconds(newTime);
-    playerRef.current.seekTo(newTime); // Seek video to new time
+    playerRef.current.seekTo(newTime);
   };
 
   const dispComments = async () => {
@@ -70,7 +71,8 @@ export default function PlayVideo() {
 
   return (
     <>
-      <div className="container">
+      <Navbar />
+      <div className="container mt-5">
         <div className="row">
           <div className="col-8">
             <div style={{ width: "50%", margin: "0 auto" }}>
@@ -80,8 +82,8 @@ export default function PlayVideo() {
                 url={video.videoFile}
                 onProgress={handleProgress}
                 onDuration={handleDuration}
-                progressInterval={500} // Update progress every 500ms
-                controls={false} // Disable default controls
+                progressInterval={500}
+                controls={false}
                 width="100%"
                 height="400px"
               />

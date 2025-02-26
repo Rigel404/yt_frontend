@@ -24,6 +24,7 @@ export default function Home() {
 
   return (
     <>
+      <Navbar />
       {loading ? (
         <>
           <Spin />
@@ -31,7 +32,6 @@ export default function Home() {
       ) : (
         <>
           <div>
-            <Navbar />
             <h3>Welcome To Home</h3>
             <ShowAllVideos />
           </div>

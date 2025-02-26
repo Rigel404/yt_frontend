@@ -4,6 +4,7 @@ import Login from "./Components/Login";
 import Signup from "./Components/SignUp";
 import Home from "./Components/Home";
 import PlayVideo from "./Components/PlayVideo";
+import UploadVideo from "./Components/UploadVideo";
 function App() {
   return (
     <>
@@ -38,6 +39,14 @@ function App() {
             element={
               <>
                 <PlayVideo />
+              </>
+            }
+          />
+          <Route
+            path="/uploadvideo"
+            element={
+              <>
+                <UploadVideo />
               </>
             }
           />

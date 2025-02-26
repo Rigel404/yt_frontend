@@ -41,11 +41,11 @@ export const login = async (email, password) => {
 
     // Send the JSON data using Axios
     const res = await axios.post(
-      `${BASE_URL}/users/login`, // Adjust the URL if necessary (e.g., to /login)
+      `${BASE_URL}/users/login`, 
       payload,
       {
         headers: {
-          "Content-Type": "application/json", // Indicate the request body is JSON
+          "Content-Type": "application/json", 
         },
         withCredentials: true,  // Send cookies with the request
       }
