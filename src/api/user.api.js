@@ -2,7 +2,14 @@ import axios from "axios";
 
 import { BASE_URL } from "../constants/api.constants";
 
-export const signUp = async (name, username, email, password, avatar, coverImage) => {
+export const signUp = async (
+  name,
+  username,
+  email,
+  password,
+  avatar,
+  coverImage
+) => {
   try {
     // Create a FormData object
     const formData = new FormData();
@@ -14,20 +21,15 @@ export const signUp = async (name, username, email, password, avatar, coverImage
     if (coverImage) formData.append("coverImage", coverImage); // Append file
 
     // Send the form data using Axios
-    const res = await axios.post(
-      `${BASE_URL}/users/register`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data", // Indicate the request body is form-data
-        },
-        withCredentials: true,  // Send cookies with the request
-      }
-    );
-
+    const res = await axios.post(`${BASE_URL}/users/register`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Indicate the request body is form-data
+      },
+      withCredentials: true, // Send cookies with the request
+    });
   } catch (err) {
     console.error("Error during signup:", err);
-    throw err
+    throw err;
   }
 };
 
@@ -40,16 +42,12 @@ export const login = async (email, password) => {
     };
 
     // Send the JSON data using Axios
-    const res = await axios.post(
-      `${BASE_URL}/users/login`, 
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json", 
-        },
-        withCredentials: true,  // Send cookies with the request
-      }
-    );
+    const res = await axios.post(`${BASE_URL}/users/login`, payload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true, // Send cookies with the request
+    });
 
     // Handle the response (optional)
     console.log(res.data);
@@ -65,12 +63,46 @@ export const authenticateUser = async () => {
     const res = await axios.get(
       `${BASE_URL}/users/get-user`, // Replace with the appropriate endpoint for checking login status
       {
-        withCredentials: true,  // Ensures cookies are sent with the request
+        withCredentials: true, // Ensures cookies are sent with the request
       }
     );
-    return res.status == 200
+    return res.status == 200;
   } catch (err) {
     console.error("Error during authentication:", err);
-    throw err
+    throw err;
+  }
+};
+
+export const watchHistory = async () => {
+  try {
+    // Send the form data using Axios
+    const res = await axios.get(
+      `${BASE_URL}/users/history`, // Replace with the appropriate endpoint for fetching watch history
+      {
+        withCredentials: true, // Ensures cookies are sent with the request
+      }
+    );
+    console.log("res", res.data);
+    return res.data;
+  } catch (err) {
+    console.error("Error during fetching watch history:", err);
+    throw err;
+  }
+};
+
+export const addToWatchHistory = async (videoId) => {
+  try {
+    const res = await axios.put(
+      `${BASE_URL}/users/history/${videoId}`,
+      { videoId },
+      {
+        withCredentials: true,
+      }
+    );
+    console.log("res", res.data);
+    return res.data;
+  } catch (err) {
+    console.error("Error during fetching watch history:", err);
+    throw err;
   }
 };

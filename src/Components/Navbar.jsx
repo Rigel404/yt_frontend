@@ -28,6 +28,11 @@ export default function Navbar() {
                   Add New Video
                 </Link>
               </li>
+              <li className="nav-item mx-3">
+                <Link className="nav-link" to={"/history"}>
+                  My Watch History
+                </Link>
+              </li>
             </ul>
             <form className="d-flex" role="search">
               <input
@@ -42,7 +47,7 @@ export default function Navbar() {
             </form>
             <ul className="navbar-nav mx-4 mb-2 mb-lg-0">
               <li>
-                <Link className="nav-link" to={"/signUp"}>
+                <Link className="nav-link" to={"/LogOut"}>
                   Log Out
                 </Link>
               </li>

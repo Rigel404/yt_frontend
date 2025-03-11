@@ -5,6 +5,8 @@ import Signup from "./Components/SignUp";
 import Home from "./Components/Home";
 import PlayVideo from "./Components/PlayVideo";
 import UploadVideo from "./Components/UploadVideo";
+import LogOut from "./Components/LogOut";
+import History from "./Components/History";
 function App() {
   return (
     <>
@@ -27,10 +29,26 @@ function App() {
             }
           />
           <Route
+            path="/history"
+            element={
+              <>
+                <History />
+              </>
+            }
+          />
+          <Route
             path="/login"
             element={
               <>
                 <Login />
+              </>
+            }
+          />
+          <Route
+            path="/LogOut"
+            element={
+              <>
+                <LogOut />
               </>
             }
           />

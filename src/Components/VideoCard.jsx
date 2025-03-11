@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
 
 export default function VideoCard({ video }) {
-  const [user, setUser] = useState(video.userDetails);
+  const [user, setUser] = useState(video.userDetails || video.owner);
   const duration = video.duration;
   const hours = String(Math.floor(duration / 3600)).padStart(2, "0");
   const minutes = String(Math.floor((duration % 3600) / 60)).padStart(2, "0");
